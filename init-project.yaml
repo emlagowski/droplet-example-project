@@ -6,7 +6,7 @@
     git_repo_ssh: git@github.com:emlagowski/droplet-example-project.git
     repo_dest: repos/droplet-example-project
     domain: test.letsbesanta.com
-    droplet_id: all-in-one
+    project_name: all-in-one
 
   tasks:
     - include_vars: secrets.yaml
@@ -31,7 +31,8 @@
         oauth_token: "{{ oauth_token }}"
         state: present
         name: "{{ item }}"
-        ip: "{{ droplet_id }}"
+        project_name: "{{ project_name }}"
+        ip: "{{ ansible_ssh_host }}"
       with_items:
         - "www.{{ domain }}"
         - "{{ domain }}"
@@ -43,11 +44,8 @@
         domain: "{{ item }}"
         type: A
         name: "@"
-        data: "{{ droplet_id }}"
+        data: "{{ ansible_ssh_host }}"
+        project_name: "{{ project_name }}"
       with_items:
         - "www.{{ domain }}"
         - "{{ domain }}"
-
-# add domains to digital ocean
-# add domain rate limiting config to nginx configuration
-# restart nginx?
